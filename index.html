@@ -27,191 +27,234 @@
             font-family: var(--font-body);
         }
 
-        /* --- UI Components --- */
-        .music-control {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: rgba(255,255,255,0.1); width: 45px; height: 45px; 
-            border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; cursor: pointer; border: 1px solid var(--color-gold);
+        /* --- Lock Screen UI --- */
+        #lock-screen {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .lock-card {
+            background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px;
+            border: 1px solid var(--color-gold); text-align: center; backdrop-filter: blur(10px);
+        }
+        .lock-card input {
+            background: transparent; border: none; border-bottom: 2px solid var(--color-gold);
+            color: white; text-align: center; padding: 10px; margin: 20px 0; font-size: 1.2rem; outline: none;
         }
 
-        .footer-credit {
-            position: fixed; bottom: 15px; width: 100%; text-align: center;
-            font-size: 0.8rem; z-index: 100; opacity: 0.8;
+        /* --- Chocolate Rain --- */
+        .choco-particle {
+            position: fixed; top: -30px; pointer-events: none; z-index: 1;
+            animation: fall linear forwards; opacity: 0.6;
         }
-        .footer-credit a { color: var(--color-gold); text-decoration: none; font-weight: bold; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
+        /* --- Slide Engine --- */
+        #app-container { width: 100vw; height: 100vh; position: relative; }
+        .slide {
+            width: 100%; height: 100%; position: absolute;
+            top: 0; left: 0; display: none; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; padding: 20px;
+        }
+        .slide.active { display: flex; z-index: 5; }
+
+        /* --- Buttons --- */
         .btn-primary {
             background: linear-gradient(135deg, var(--color-gold), #C5A028);
             color: #000; padding: 15px 35px; border: none;
             border-radius: 50px; font-family: var(--font-heading);
             font-weight: 700; cursor: pointer; margin-top: 20px;
-            transition: transform 0.2s;
-        }
-        .btn-primary:active { transform: scale(0.9); }
-
-        /* --- Slide Engine --- */
-        #app-container { width: 100vw; height: 100vh; position: relative; }
-
-        .slide {
-            width: 100%; height: 100%; position: absolute;
-            top: 0; left: 0; display: none; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; padding: 20px;
         }
 
-        .slide.active { display: flex; z-index: 5; }
-
-        h1 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 1rem; }
-        
-        /* --- Shararat Slide 2 --- */
-        .shararat-card { max-width: 300px; text-align: center; }
-        #wrapper-img, #chocolate-img { width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; }
-        #chocolate-img { display: none; }
-        #shararat-msg { display: none; margin-top: 15px; font-size: 1rem; background: rgba(255,255,255,0.08); padding: 15px; border-radius: 10px; border-left: 4px solid var(--color-gold); }
-        .highlight { color: var(--color-gold); font-weight: bold; }
-
-        /* --- Memory Slide 3 --- */
-        .photo-frame {
-            width: 260px; height: 340px; background: white; padding: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(-2deg);
+        .btn-screenshot {
+            background-color: var(--color-gold);
+            color: #000; padding: 12px 40px; border: none;
+            border-radius: 30px; font-family: var(--font-body);
+            font-weight: 600; font-size: 1rem; cursor: pointer;
+            margin-top: 25px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
         }
-        .photo-inner { width: 100%; height: 85%; background: #444 url('https://picsum.photos/400/500') center/cover; }
-        .photo-caption { color: #333; font-family: 'Courier New', monospace; padding-top: 10px; font-weight: bold; }
 
-        /* --- Choco Bar Slide 5 --- */
+        /* --- Slide 4: Real Chocolate Grid --- */
         .choco-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
-            width: 220px; margin: 20px auto; cursor: pointer;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+            margin: 30px auto; width: 220px;
         }
-        .piece { background: #4E342E; height: 70px; border-radius: 5px; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.4), 2px 2px 5px rgba(0,0,0,0.5); }
+        .piece {
+            width: 100px; height: 80px;
+            background: linear-gradient(145deg, #4e2b1f, #2d160e);
+            border-radius: 8px;
+            box-shadow: inset 4px 4px 8px #5d3425, inset -4px -4px 8px #1d0e09, 5px 5px 15px rgba(0,0,0,0.5);
+            cursor: pointer; position: relative;
+        }
+        .piece::after {
+            content: ''; position: absolute; inset: 10px;
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 4px;
+        }
+
+        /* --- Music Box Beats --- */
+        .glowing-box {
+            display: none; padding: 25px; border-radius: 20px;
+            background: rgba(0,0,0,0.8); border: 2px solid var(--color-gold);
+            box-shadow: 0 0 25px var(--color-gold); animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.03); } }
+        .bars { display: flex; justify-content: center; gap: 4px; height: 30px; margin: 15px 0; }
+        .bar { width: 3px; background: var(--color-gold); animation: wave 0.4s infinite ease-in-out alternate; }
+        @keyframes wave { from { height: 5px; } to { height: 30px; } }
+
+        h1 { font-family: var(--font-heading); font-size: 2.5rem; }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="https://www.chosic.com/wp-content/uploads/2021/07/The-Sweetest-Thing.mp3" type="audio/mp3">
-    </audio>
+    <div id="lock-screen">
+        <div class="lock-card">
+            <h2 style="color:var(--color-gold)">Dimple's Private Surprise</h2>
+            <input type="text" id="passInput" placeholder="Enter Password">
+            <br>
+            <button class="btn-primary" onclick="unlock()">Unlock Surprise 🔑</button>
+            <p style="font-size:0.7rem; margin-top:10px; opacity:0.6">Hint: Sugar D****</p>
+        </div>
+    </div>
 
-    <div class="music-control" onclick="toggleMusic()">🎵</div>
+    <audio id="music1" loop><source src="https://www.chosic.com/wp-content/uploads/2021/07/The-Sweetest-Thing.mp3"></audio>
+    <audio id="music2" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <div id="app-container">
-        
         <section id="slide-0" class="slide active">
-            <h1 id="main-title">Happy Chocolate Day<br>Dimple ❤️</h1>
+            <h1>Happy Chocolate Day<br>Dimple ❤️</h1>
             <p>You're the sweetest part of my life.</p>
             <button class="btn-primary" onclick="goToSlide(1)">Unwrap Your Surprise 🍫</button>
         </section>
 
         <section id="slide-1" class="slide">
-            <div class="shararat-card">
-                <img id="wrapper-img" src="https://i.ibb.co/1DGR6nJ/image.jpg" onclick="triggerShararat()" alt="Wrapper">
-                <img id="chocolate-img" src="https://i.ibb.co/hJ6CHYXC/image.jpg" alt="Chocolate">
-                <p id="tap-hint" style="margin-top:10px; opacity: 0.6;">Tap the pack to open ✨</p>
-                
-                <div id="shararat-msg">
-                    Ohhh! Lagta Hai Ki <span class="highlight">Galti Se Hawas Waali Chocolate</span> Nikal Gayi Bahar. 😂 
-                    <br><br>
-                    Leavee... Tum <span class="highlight" style="color: #4db8ff;">Real Waali Memory Loo</span> Dimple. ✨
-                    <br>
-                    <button class="btn-primary" onclick="goToSlide(2)" style="padding: 10px 20px; font-size: 0.9rem;">Next Surprise ➡️</button>
+            <div style="max-width:300px">
+                <img id="wrap-img" src="https://i.ibb.co/1DGR6nJ/image.jpg" onclick="triggerShararat()" style="width:100%; border-radius:15px; cursor:pointer;">
+                <img id="choco-img-s1" src="https://i.ibb.co/hJ6CHYXC/image.jpg" style="display:none; width:100%; border-radius:15px;">
+                <div id="s1-msg" style="display:none; margin-top:15px;">
+                    <p>Ohhh! <span style="color:var(--color-gold)">Galti Se Hawas Waali Chocolate</span> Nikal Gayi. 😂</p>
+                    <button class="btn-screenshot" onclick="goToSlide(2)">Next Surprise ➡️</button>
                 </div>
             </div>
         </section>
 
         <section id="slide-2" class="slide">
-            <div class="photo-frame">
-                <div class="photo-inner"></div>
-                <div class="photo-caption">Dimple & Yuvraj</div>
+            <div class="memory-box" style="position:relative; width:280px; height:380px;">
+                <img id="real-choco-img" src="https://i.ibb.co/hJ6CHYXC/image.jpg" onclick="showRealImg()" style="width:100%; cursor:pointer; border-radius:15px;">
+                <div id="dimple-photo" style="display:none; width:100%; height:100%; background:white; padding:12px; transform:rotate(-2deg); box-shadow:0 10px 40px #000;">
+                    <div style="width:100%; height:85%; background:url('https://i.ibb.co/4nbfVpD3/image.jpg') center/cover;"></div>
+                    <p style="color:#333; padding-top:10px; font-weight:bold;">Dimple & Yuvraj ❤️</p>
+                </div>
             </div>
-            <p style="margin-top:25px; max-width: 300px;">Har pal tumhare saath mitha hai, jaise silk ki mithaas.</p>
-            <button class="btn-primary" onclick="goToSlide(3)">My Promise 💖</button>
+            <button class="btn-screenshot" id="mem-next" style="display:none" onclick="goToSlide(3)">My Promise 💖</button>
         </section>
 
         <section id="slide-3" class="slide">
-            <h1>My Promise</h1>
-            <p>I promise to keep your life as sweet<br>as your favorite chocolate, Dimple. 🍫💝</p>
-            <button class="btn-primary" onclick="goToSlide(4)">One Last Thing 🎁</button>
+            <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border-left: 4px solid var(--color-gold);">
+                <h1 style="margin-bottom: 15px;">My Promise</h1>
+                <p>I promise to keep your life as sweet<br>as your favorite chocolate, Dimple. 🍫💝</p>
+                <button class="btn-screenshot" onclick="goToSlide(4)">One Last Thing 🎁</button>
+            </div>
         </section>
 
         <section id="slide-4" class="slide">
-            <h1>I Love You Dimple!</h1>
-            <div class="choco-grid" onclick="breakChoco()">
-                <div class="piece"></div><div class="piece"></div>
-                <div class="piece"></div><div class="piece"></div>
+            <div id="choco-stage">
+                <h1 style="margin-bottom:10px;">I Love You Dimple My BACHAA My DHAPUDIII!</h1>
+                <div class="choco-grid">
+                    <div class="piece" onclick="breakPiece(this)"></div>
+                    <div class="piece" onclick="breakPiece(this)"></div>
+                    <div class="piece" onclick="breakPiece(this)"></div>
+                    <div class="piece" onclick="breakPiece(this)"></div>
+                </div>
+                <p id="break-hint">Tap The Chocolate To Break it!</p>
+                <p style="font-size: 0.8rem; margin-top: 10px; opacity:0.7;">(Aur Hamesha Aise Hi Muskurati Raho Bachaa...)</p>
             </div>
-            <p id="final-note">Tap the chocolate to break it!</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">(Aur hamesha aise hi muskurati raho)</p>
+
+            <div id="final-message" style="display:none; text-align:center;">
+                <h1 style="color:var(--color-gold); margin-bottom:20px;">You're my favorite treat forever! ❤️</h1>
+                <button class="btn-screenshot" onclick="playFinalBeat()">Chalo Ab Is Website Ki Journey Me Ek Aur Gaana Sun Lete Hai... 🎵</button>
+            </div>
+
+            <div class="glowing-box" id="musicBox" style="margin-top:20px;">
+                <h2 style="color:var(--color-gold)">Now Playing: Janam Janam By Arjit Singh Only For Dimple</h2>
+                <div class="bars">
+                    <div class="bar" style="animation-delay:0.1s"></div>
+                    <div class="bar" style="animation-delay:0.3s"></div>
+                    <div class="bar" style="animation-delay:0.5s"></div>
+                    <div class="bar" style="animation-delay:0.2s"></div>
+                </div>
+                <button class="btn-screenshot" onclick="location.reload()" style="background:red; color:white;">Wanna Do This Again? </button>
+            </div>
         </section>
-
-    </div>
-
-    <div class="footer-credit">
-        Developed With Lot Of Love By ❤️ <a href="https://Instagram.com/itz___yuviiii" target="_blank">Yuvraj</a>
     </div>
 
     <script>
-        let currentSlideIdx = 0;
-        const totalSlides = 5;
-        const music = document.getElementById('bg-music');
-        let isMusicPlaying = false;
+        let piecesBroken = 0;
+        let currentIdx = 0;
+        const m1 = document.getElementById('music1');
+        const m2 = document.getElementById('music2');
 
-        function goToSlide(nextIdx) {
-            // Hide current
-            document.getElementById(`slide-${currentSlideIdx}`).style.display = 'none';
-            document.getElementById(`slide-${currentSlideIdx}`).classList.remove('active');
-            
-            // Show next
-            const nextSlide = document.getElementById(`slide-${nextIdx}`);
-            nextSlide.style.display = 'flex';
-            nextSlide.classList.add('active');
-            
-            // GSAP Animation for smooth entrance
-            gsap.from(nextSlide, {
-                duration: 0.6,
-                y: 30,
-                opacity: 0,
-                ease: "power2.out"
+        function unlock() {
+            if(document.getElementById('passInput').value.toLowerCase() === "sugar daddy") {
+                gsap.to("#lock-screen", { y: "-100%", duration: 1 });
+                m1.play();
+                startRain();
+            } else { alert("Wrong Password!"); }
+        }
+
+        function startRain() {
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.className = 'choco-particle';
+                p.innerHTML = ['🍫','✨','💖'][Math.floor(Math.random()*3)];
+                p.style.left = Math.random() * 100 + "vw";
+                p.style.animationDuration = (Math.random()*3 + 2) + "s";
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 5000);
+            }, 300);
+        }
+
+        function breakPiece(el) {
+            gsap.to(el, { 
+                scale: 1.5, opacity: 0, rotate: 20, duration: 0.5, 
+                onComplete: () => {
+                    el.style.visibility = "hidden";
+                    piecesBroken++;
+                    if(piecesBroken === 4) showFinalStep();
+                } 
             });
+        }
 
-            currentSlideIdx = nextIdx;
+        function showFinalStep() {
+            gsap.to("#choco-stage", { opacity: 0, duration: 0.5, onComplete: () => {
+                document.getElementById('choco-stage').style.display = 'none';
+                document.getElementById('final-message').style.display = 'block';
+                gsap.from("#final-message", { y: 20, opacity: 0 });
+            }});
+        }
+
+        function playFinalBeat() {
+            m1.pause();
+            m2.play();
+            document.getElementById('final-message').style.display = 'none';
+            document.getElementById('musicBox').style.display = 'block';
+        }
+
+        function goToSlide(n) {
+            document.getElementById(`slide-${currentIdx}`).style.display = 'none';
+            document.getElementById(`slide-${n}`).style.display = 'flex';
+            currentIdx = n;
         }
 
         function triggerShararat() {
-            // Hide wrapper, show chocolate
-            document.getElementById('wrapper-img').style.display = 'none';
-            document.getElementById('tap-hint').style.display = 'none';
-            document.getElementById('chocolate-img').style.display = 'block';
-            
-            // Animation for chocolate pop-in
-            gsap.from("#chocolate-img", { scale: 0.5, duration: 0.5, ease: "back.out(1.7)" });
-
-            // Show message after a small delay
-            setTimeout(() => {
-                const msg = document.getElementById('shararat-msg');
-                msg.style.display = 'block';
-                gsap.from(msg, { y: 20, opacity: 0, duration: 0.5 });
-            }, 600);
+            document.getElementById('wrap-img').style.display = 'none';
+            document.getElementById('choco-img-s1').style.display = 'block';
+            document.getElementById('s1-msg').style.display = 'block';
         }
 
-        function breakChoco() {
-            gsap.to(".piece", { 
-                x: () => (Math.random() - 0.5) * 300, 
-                y: () => (Math.random() - 0.5) * 300, 
-                opacity: 0, 
-                rotation: 720, 
-                duration: 1.2 
-            });
-            document.getElementById('final-note').innerHTML = "<b style='color:#D4AF37; font-size:1.2rem;'>You're my favorite treat forever! ❤️</b>";
-        }
-
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                music.pause();
-            } else {
-                music.play().catch(e => console.log("Click interaction needed for audio"));
-            }
-            isMusicPlaying = !isMusicPlaying;
+        function showRealImg() {
+            document.getElementById('real-choco-img').style.display = 'none';
+            document.getElementById('dimple-photo').style.display = 'block';
+            document.getElementById('mem-next').style.display = 'inline-block';
         }
     </script>
 </body>
