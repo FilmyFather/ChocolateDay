@@ -608,4 +608,72 @@
                 y: 100,
                 opacity: 0,
                 stagger: 0.2,
+
+        // Button Click Logic
+        document.getElementById('start-btn').addEventListener('click', () => {
+            goToSlide(1);
+        });
+
+        // Slide 3: Fix incomplete function
+        function animateSlide3() {
+            gsap.fromTo(".drip", 
+                { y: '-80%' },
+                { y: '-50%', duration: 2, ease: "elastic.out(1, 0.5)" }
+            );
+
+            gsap.from(".s3-text", {
+                y: 100,
+                opacity: 0,
+                stagger: 0.2,
+                duration: 1
+            });
+        }
+
+        // Slide 4: Chocolate Break Logic
+        const chocoBar = document.getElementById('choco-break');
+        chocoBar.addEventListener('click', () => {
+            gsap.to(".choco-piece", {
+                x: () => (Math.random() - 0.5) * 400,
+                y: () => (Math.random() - 0.5) * 400,
+                rotation: () => Math.random() * 360,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.05
+            });
+            gsap.to(".hidden-message", {
+                scale: 1,
+                opacity: 1,
+                delay: 0.5,
+                duration: 0.5,
+                ease: "back.out(1.7)"
+            });
+        });
+
+        function resetSlide4() {
+            gsap.set(".choco-piece", { x: 0, y: 0, rotation: 0, opacity: 1 });
+            gsap.set(".hidden-message", { scale: 0, opacity: 0 });
+        }
+
+        // Slide 5: Final Heart Pulse
+        function animateSlide5() {
+            gsap.to(".pulse-heart", {
+                scale: 1.2,
+                repeat: -1,
+                yoyo: true,
+                duration: 0.6
+            });
+        }
+
+        // Music Toggle
+        function toggleMusic() {
+            if (musicPlaying) {
+                audio.pause();
+                musicPlaying = false;
+            } else {
+                audio.play();
+                musicPlaying = true;
+            }
+        }
+        
+        document.getElementById('music-btn').addEventListener('click', toggleMusic);
          
